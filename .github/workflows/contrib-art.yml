@@ -1,0 +1,27 @@
+name: Contrib Art
+
+on:
+  schedule:
+    # Chaque 1er janvier à 10h UTC → recrée l'art pour l'année qui vient
+    - cron: '0 10 1 1 *'
+  workflow_dispatch:  # déclenchement manuel pour tester
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Configure git
+        run: |
+          git config user.name "fte"
+          git config user.email "github@575.be"
+
+      - name: Run contrib art
+        run: python3 contribs-tile-art.py plop.txt --target-file contrib_art.txt
+
+      - name: Push commits
+        run: git push

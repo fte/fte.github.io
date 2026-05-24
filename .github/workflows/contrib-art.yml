@@ -23,5 +23,7 @@ jobs:
       - name: Run contrib art
         run: python3 contribs-tile-art.py plop.txt --target-file contrib_art.txt
 
-      - name: Push commits
-        run: git push
+      - name: Pack objects and push
+        run: |
+          git gc --aggressive
+          git push
